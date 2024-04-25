@@ -49,7 +49,8 @@ func main() {
 	router := gin.Default()
 	router.GET("/", index)
 	router.GET("/menu", controller.GetMenu)
-	router.POST("/menu", controller.InsertMenu)
+	router.POST("/menu", gin.BasicAuth(gin.Accounts{"admin": "admin"}), controller.InsertMenu)
+	router.PUT("/menu/:id", gin.BasicAuth(gin.Accounts{"admin": "admin"}), controller.UpdateMenu)
 
 	router.Run("localhost:8080")
 }

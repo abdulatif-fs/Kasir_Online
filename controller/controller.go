@@ -5,6 +5,7 @@ import (
 	"kasir_online/query"
 	"kasir_online/structs"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -47,6 +48,44 @@ func InsertMenu(c *gin.Context) {
 	})
 }
 
+func UpdateMenu(c *gin.Context) {
+	var menu structs.Menu
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	err := c.ShouldBindJSON(&menu)
+	if err != nil {
+		panic(err)
+	}
+
+	menu.Id = int(id)
+	err = query.UpdateMenu(database.DbConnection, menu)
+
+	if err != nil {
+		panic(err)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"result": "Succes Updates Menu",
+	})
+}
+
+func DeleteMenu(c *gin.Context) {
+	var menu structs.Menu
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	menu.Id = int(id)
+
+	err := query.DeleteMenu(database.DbConnection, menu)
+
+	if err != nil {
+		panic(err)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"result": "Deleted Menu Success",
+	})
+}
+
 func GetKasir(c *gin.Context) {
 	var (
 		result gin.H
@@ -65,4 +104,22 @@ func GetKasir(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, result)
+}
+
+func InsertKasir(c *gin.Context) {
+	var kasir structs.Kasir
+
+	err := c.ShouldBindJSON(&kasir)
+	if err != nil {
+		panic(err)
+	}
+
+	err = query.InsertKasir(database.DbConnection, kasir)
+	if err != nil {
+		panic(err)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"result": "Success Insert Kasir",
+	})
 }
