@@ -51,6 +51,10 @@ func main() {
 	router.GET("/menu", controller.GetMenu)
 	router.POST("/menu", gin.BasicAuth(gin.Accounts{"admin": "admin"}), controller.InsertMenu)
 	router.PUT("/menu/:id", gin.BasicAuth(gin.Accounts{"admin": "admin"}), controller.UpdateMenu)
+	router.GET("/kasir", gin.BasicAuth(gin.Accounts{"admin": "admin"}), controller.GetKasir)
+	router.POST("/kasir", gin.BasicAuth(gin.Accounts{"admin": "admin"}), controller.InsertKasir)
+	router.GET("/transaksi", controller.GetTransaksi)
+	router.POST("/transaksi", controller.InsertKasir)
 
 	router.Run("localhost:8080")
 }

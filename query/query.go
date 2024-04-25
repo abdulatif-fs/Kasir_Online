@@ -2,6 +2,8 @@ package query
 
 import (
 	"database/sql"
+	"time"
+
 	// "fmt"
 	"kasir_online/structs"
 )
@@ -99,7 +101,6 @@ func InsertKasir(db *sql.DB, kasir structs.Kasir) (err error) {
 
 func GetTransaksi(db *sql.DB) (results []structs.Transaksi, err error) {
 	sql := "SELECT * from transaksi"
-	// sql2 := "SELECT SUM(total) from detail_transaksi WHERE id=$1"
 
 	rows, err := db.Query(sql)
 
@@ -111,10 +112,8 @@ func GetTransaksi(db *sql.DB) (results []structs.Transaksi, err error) {
 
 	for rows.Next() {
 		var transaksi = structs.Transaksi{}
-		// sql := "SELECT SUM(harga) from detail_transaksi WHERE transaksi_id = $1"
-		// id :=
 
-		err = rows.Scan(&transaksi.Id, &transaksi.Kasir_id, transaksi.Tanggal_transaksi, transaksi.Tanggal_transaksi)
+		err = rows.Scan(&transaksi.Id, &transaksi.Kasir_id, transaksi.Tanggal_transaksi)
 		if err != nil {
 			panic(err)
 		}
@@ -122,4 +121,13 @@ func GetTransaksi(db *sql.DB) (results []structs.Transaksi, err error) {
 		results = append(results, transaksi)
 	}
 	return
+}
+
+func InsertTransaksi(db *sql.DB, transaksi structs.Transaksi) (err error) {
+	sql := "INSERT INTO transaksi (id, id_kasir, tanggal)"
+
+	Tanggal_transaksi := time.Now()
+	_, errs := db.Exec(sql, &transaksi.Id, &transaksi.Kasir_id, &Tanggal_transaksi)
+
+	return errs
 }

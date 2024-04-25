@@ -7,15 +7,16 @@ type Menu struct {
 }
 
 type Kasir struct {
-	Id   int    `json:"id"`
-	Nama string `json:"nama"`
+	Id       int    `json:"id"`
+	Nama     string `json:"nama"`
+	Email    string `json:"email"`
+	password string `json:"password"`
 }
 
 type Transaksi struct {
 	Id                int         `json:"id"`
 	Kasir_id          int         `json:"kasir_id"`
 	Tanggal_transaksi interface{} `json:"tanggal_transaksi"`
-	Total_belanja     int
 }
 
 type Detail_transaksi struct {
