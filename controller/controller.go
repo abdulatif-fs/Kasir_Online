@@ -161,3 +161,45 @@ func InsertTransaksi(c *gin.Context) {
 		"result": "Success Insert Transaksi",
 	})
 }
+
+func GetDetailTransaksi(c *gin.Context) {
+	var (
+		result           gin.H
+		detail_transaksi structs.Detail_transaksi
+	)
+	id, _ := strconv.Atoi(c.Param("id"))
+	detail_transaksi.Transaksi_id = int(id)
+
+	transaksi, err := query.GetDetailTransaksi(database.DbConnection, detail_transaksi)
+
+	if err != nil {
+		result = gin.H{
+			"result": err,
+		}
+	} else {
+		result = gin.H{
+			"result": transaksi,
+		}
+	}
+
+	c.JSON(http.StatusOK, result)
+}
+
+func InsertDetailTransaksi(c *gin.Context) {
+	var Detail_transaksi structs.Detail_transaksi
+	var menu structs.Menu
+
+	err := c.ShouldBindJSON(&Detail_transaksi)
+	if err != nil {
+		panic(err)
+	}
+
+	err = query.InsertDetailTransaksi(database.DbConnection, Detail_transaksi, menu)
+	if err != nil {
+		panic(err)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"result": "Success Insert Detail_Transaksi",
+	})
+}

@@ -124,10 +124,61 @@ func GetTransaksi(db *sql.DB) (results []structs.Transaksi, err error) {
 }
 
 func InsertTransaksi(db *sql.DB, transaksi structs.Transaksi) (err error) {
-	sql := "INSERT INTO transaksi (id, id_kasir, tanggal)"
+	sql := "INSERT INTO transaksi (id, id_kasir, tanggal) VALUES ($1, $2, $3)"
 
 	Tanggal_transaksi := time.Now()
 	_, errs := db.Exec(sql, &transaksi.Id, &transaksi.Kasir_id, &Tanggal_transaksi)
+
+	return errs
+}
+
+func GetDetailTransaksi(db *sql.DB, detail_transaksi structs.Detail_transaksi) (results []structs.Detail_transaksi, err error) {
+	sql := `SELECT transaksi_id, menu_id, quantiti from detail_transaksi AS dt
+			INNER JOIN menu as m ON m.id = dt.menu_id 
+			WHERE dt.transaksi_id = $1`
+
+	rows, err := db.Query(sql, detail_transaksi.Transaksi_id)
+
+	if err != nil {
+		panic(err)
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		detail_transaksi = structs.Detail_transaksi{}
+		detail_transaksi.Total = detail_transaksi.Quantiti * detail_transaksi.Harga
+
+		err = rows.Scan(&detail_transaksi.Transaksi_id, &detail_transaksi.Menu_id, &detail_transaksi.Quantiti, &detail_transaksi.Nama, &detail_transaksi.Harga, &detail_transaksi.Total)
+		if err != nil {
+			panic(err)
+		}
+		results = append(results, detail_transaksi)
+	}
+	return
+}
+
+func InsertDetailTransaksi(db *sql.DB, Detail_transaksi structs.Detail_transaksi, menu structs.Menu) (err error) {
+	sql := "INSERT INTO detail_transaksi (transaksi_id, menu_id, nama, quantiti, harga) VALUES ($1, $2, $3, $4, $5)"
+	sql2 := "SELECT nama, harga from menu WHERE id = S1"
+	id := Detail_transaksi.Menu_id
+	rows, err := db.Query(sql2, id)
+	if err != nil {
+		panic(err)
+	}
+
+	menu = structs.Menu{}
+	for rows.Next() {
+		err = rows.Scan(&menu.Nama, menu.Harga)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	Detail_transaksi.Nama = menu.Nama
+	Detail_transaksi.Harga = menu.Harga
+
+	_, errs := db.Exec(sql, &Detail_transaksi.Transaksi_id, &Detail_transaksi.Menu_id, Detail_transaksi.Nama, &Detail_transaksi.Quantiti, &Detail_transaksi.Harga)
 
 	return errs
 }

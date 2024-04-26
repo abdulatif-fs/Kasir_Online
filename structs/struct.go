@@ -10,7 +10,7 @@ type Kasir struct {
 	Id       int    `json:"id"`
 	Nama     string `json:"nama"`
 	Email    string `json:"email"`
-	password string `json:"password"`
+	Password string `json:"password"`
 }
 
 type Transaksi struct {
@@ -20,8 +20,10 @@ type Transaksi struct {
 }
 
 type Detail_transaksi struct {
-	Transaksi_id int `json:"transaksi_id"`
-	Menu_id      int `json:"menu_id"`
-	Quantiti     int `json:"quantiti"`
-	Total        int
+	Transaksi_id int    `json:"transaksi_id"`
+	Menu_id      int    `json:"menu_id"`
+	Quantiti     int    `json:"quantiti"`
+	Nama         string `json:"nama"`
+	Harga        int    `json:"harga"`
+	Total        int    `json:"total"`
 }

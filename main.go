@@ -55,6 +55,8 @@ func main() {
 	router.POST("/kasir", gin.BasicAuth(gin.Accounts{"admin": "admin"}), controller.InsertKasir)
 	router.GET("/transaksi", controller.GetTransaksi)
 	router.POST("/transaksi", controller.InsertKasir)
+	router.GET("/detail_transaksi/:id", controller.GetDetailTransaksi)
+	router.POST("/detail_transaksi", controller.InsertDetailTransaksi)
 
 	router.Run("localhost:8080")
 }
