@@ -27,7 +27,7 @@ var (
 )
 
 func main() {
-	err = godotenv.Load("KASIR_ONLINE/config/.env")
+	err = godotenv.Load(".env")
 
 	if err != nil {
 		fmt.Println("failed load file environment")
