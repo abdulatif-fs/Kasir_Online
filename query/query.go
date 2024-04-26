@@ -133,7 +133,7 @@ func InsertTransaksi(db *sql.DB, transaksi structs.Transaksi) (err error) {
 }
 
 func GetDetailTransaksi(db *sql.DB, detail_transaksi structs.Detail_transaksi) (results []structs.Detail_transaksi, err error) {
-	sql := `SELECT transaksi_id, menu_id, quantity, nama, m.harga 
+	sql := `SELECT transaksi_id, menu_id, quantity, nama, m.harga, quantity*m.harga as Total
 	from detail_transaksi AS dt
 	INNER JOIN menu as m ON m.id = dt.menu_id 
 	WHERE dt.transaksi_id = $1`
@@ -147,14 +147,10 @@ func GetDetailTransaksi(db *sql.DB, detail_transaksi structs.Detail_transaksi) (
 	defer rows.Close()
 
 	for rows.Next() {
-		// detail_transaksi = structs.Detail_transaksi{}
-		Total := detail_transaksi.Quantiti * detail_transaksi.Harga
-
-		err = rows.Scan(&detail_transaksi.Transaksi_id, &detail_transaksi.Menu_id, &detail_transaksi.Quantiti, &detail_transaksi.Nama, &detail_transaksi.Harga)
+		err = rows.Scan(&detail_transaksi.Transaksi_id, &detail_transaksi.Menu_id, &detail_transaksi.Quantiti, &detail_transaksi.Nama, &detail_transaksi.Harga, &detail_transaksi.Total)
 		if err != nil {
 			panic(err)
 		}
-		detail_transaksi.Total = Total
 		results = append(results, detail_transaksi)
 	}
 	return
