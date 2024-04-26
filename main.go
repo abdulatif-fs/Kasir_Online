@@ -6,6 +6,7 @@ import (
 	"kasir_online/controller"
 	db "kasir_online/database"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
@@ -26,13 +27,13 @@ var (
 
 func main() {
 
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		HOST, PORT, USER, PASSWORD, DBNAME,
-		// os.Getenv("PGHOST"),
-		// os.Getenv("PGPORT"),
-		// os.Getenv("PGUSER"),
-		// os.Getenv("PGPASSWORD"),
-		// os.Getenv("PGDATABASE"),
+	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		// HOST, PORT, USER, PASSWORD, DBNAME,
+		os.Getenv("PGHOST"),
+		os.Getenv("PGPORT"),
+		os.Getenv("PGUSER"),
+		os.Getenv("PGPASSWORD"),
+		os.Getenv("PGDATABASE"),
 	)
 	DB, err = sql.Open("postgres", psqlInfo)
 	if err != nil {
@@ -58,7 +59,7 @@ func main() {
 	router.GET("/detail_transaksi/:id", controller.GetDetailTransaksi)
 	router.POST("/detail_transaksi", controller.InsertDetailTransaksi)
 
-	router.Run("localhost:8080")
+	router.Run(":" + os.Getenv("PORT"))
 }
 
 func index(c *gin.Context) {
