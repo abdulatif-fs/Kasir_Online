@@ -28,7 +28,6 @@ var (
 func main() {
 
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		// HOST, PORT, USER, PASSWORD, DBNAME,
 		os.Getenv("PGHOST"),
 		os.Getenv("PGPORT"),
 		os.Getenv("PGUSER"),
