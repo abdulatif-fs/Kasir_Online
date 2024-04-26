@@ -12,13 +12,13 @@ import (
 	_ "github.com/lib/pq"
 )
 
-const (
-	HOST     = "localhost"
-	PORT     = 5432
-	USER     = "postgres"
-	PASSWORD = "asdfghjkl"
-	DBNAME   = "kasir"
-)
+// const (
+// 	HOST     = "localhost"
+// 	PORT     = 5432
+// 	USER     = "postgres"
+// 	PASSWORD = "asdfghjkl"
+// 	DBNAME   = "kasir"
+// )
 
 var (
 	DB  *sql.DB
@@ -63,5 +63,5 @@ func main() {
 }
 
 func index(c *gin.Context) {
-	c.JSON(http.StatusOK, "SELAMAT DATANG DI KASIR ONLINE")
+	c.JSON(http.StatusOK, "SELAMAT DATANG DI KASIR ONLINE BY ABDULATIF")
 }
