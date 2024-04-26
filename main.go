@@ -27,7 +27,7 @@ var (
 )
 
 func main() {
-	err = godotenv.Load("Quiz-3/config/.env")
+	err = godotenv.Load("config/.env")
 
 	if err != nil {
 		fmt.Println("failed load file environment")
