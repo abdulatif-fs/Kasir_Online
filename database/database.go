@@ -22,6 +22,8 @@ func DbMigrate(dbParam *sql.DB) {
 		Root:       "sql_migrations",
 	}
 
+	fmt.Println(dbParam)
+
 	n, errs := migrate.Exec(dbParam, "postgres", migrations, migrate.Up)
 	if errs != nil {
 		panic(errs)
